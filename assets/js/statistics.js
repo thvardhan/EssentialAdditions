@@ -3,8 +3,8 @@ update();
 setInterval(function() { update(); }, 5000);
 
 function update() {
-    $.getJSON("https://api.github.com/repos/spikespaz/EssentialAdditions/forks", function(response) {
-        $('#fork-count').html(response.length);
+    $.getJSON("https://api.github.com/repos/spikespaz/EssentialAdditions", function(response) {
+        $('#fork-count').html(response.forks);
     });
 
     $.getJSON("https://api.github.com/repos/spikespaz/EssentialAdditions/contributors", function(response) {
