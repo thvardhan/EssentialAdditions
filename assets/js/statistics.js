@@ -21,6 +21,7 @@ function update() {
 
         $('#latest-release').html(version_title[0]);
         $('#minecraft-version').html(version_title[1]);
+        $('#download-count').html(response.assets[0].download_count);
         $('#download-release').attr("href", response.assets[0].browser_download_url);
     });
 
