@@ -1,6 +1,6 @@
 update();
 
-setInterval(() => { update(); }, 2000);
+setInterval(() => { update(); }, 5000);
 
 function update() {
     $.getJSON("https://api.github.com/repos/spikespaz/EssentialAdditions", (response) => {
