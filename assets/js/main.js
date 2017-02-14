@@ -1,9 +1,3 @@
-/*
-	Stellar by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
-*/
-
 (function($) {
 
 	skel.breakpoints({
@@ -17,9 +11,9 @@
 
 	$(function() {
 
-		var	$window = $(window),
-			$body = $('body'),
-			$main = $('#main');
+		const $window = $(window),
+            $body = $('body'),
+            $main = $('#main');
 
 		// Disable animations/transitions until the page has loaded.
 			$body.addClass('is-loading');
@@ -42,7 +36,7 @@
 			});
 
 		// Nav.
-			var $nav = $('#nav');
+			const $nav = $('#nav');
 
 			if ($nav.length > 0) {
 
@@ -59,7 +53,7 @@
 						});
 
 				// Links.
-					var $nav_a = $nav.find('a');
+					const $nav_a = $nav.find('a');
 
 					$nav_a
 						.scrolly({
@@ -68,7 +62,7 @@
 						})
 						.on('click', function() {
 
-							var $this = $(this);
+							const $this = $(this);
 
 							// External link? Bail.
 								if ($this.attr('href').charAt(0) != '#')
@@ -87,9 +81,9 @@
 						})
 						.each(function() {
 
-							var	$this = $(this),
-								id = $this.attr('href'),
-								$section = $(id);
+							const $this = $(this),
+                                id = $this.attr('href'),
+                                $section = $(id);
 
 							// No section for this link? Bail.
 								if ($section.length < 1)
