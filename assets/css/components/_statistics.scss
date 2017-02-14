@@ -34,6 +34,12 @@
 				background-color: _palette(accent5);
 			}
 
+			&.style1, &.style2, &.style3, &.style4, &.style5 {
+				@include vendor('background-image', (
+								'url("images/overlay.png")',
+				));
+			}
+
 			strong, b {
 				display: block;
 				font-size: 2em;
