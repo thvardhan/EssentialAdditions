@@ -35,7 +35,7 @@ function update() {
                 "\n    <td>" + date_created + "</td>" +
                 "\n    <td>" + file.downloads + "</td>" +
                 "\n    <td>" +
-                "<a class=\"icon fa-download\" href=\"" + files_base + file.id + "/download\"></a></td>" +
+                "<a class=\"icon fa-download\" href=\"" + files_base + file.id + "/download\"> #" + file.id + "</a></td>" +
                 "</tr>\n" + table_data;
 
             $('#release-table').html(table_data)
