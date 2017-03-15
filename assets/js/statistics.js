@@ -4,8 +4,6 @@ const files_base = "https://minecraft.curseforge.com/projects/essential-addition
 
 update();
 
-setInterval(update(), 60000);
-
 function update() {
     $.getJSON(github_url, (response) => {
         $('#fork-count').html(response.forks);
@@ -21,6 +19,27 @@ function update() {
     $.getJSON(curse_url, (response) => {
         const version_number = response.download.name.split(/[\s-]+/g)[1];
         const download_direct = files_base + response.download.id + "/download";
+
+        let table_data;
+
+        for (let key in response.files) {
+            let file = response.files[key];
+            let split_name = file.name.split(/[\s-]+/g);
+
+            let date_created = new Date(file.created_at);
+            date_created = date_created.toDateString();
+            table_data = "<tr>" +
+                "\n    <td>" + split_name[0] + "</td>" +
+                "\n    <td>" + split_name[1] + "</td>" +
+                "\n    <td>" + split_name[2] + "</td>" +
+                "\n    <td>" + date_created + "</td>" +
+                "\n    <td>" + file.downloads + "</td>" +
+                "\n    <td>" +
+                "<a class=\"icon fa-download alt\" href=\"" + files_base + file.id + "/download\"></a></td>" +
+                "</tr>\n" + table_data;
+
+            $('#release-table').html(table_data)
+        }
 
         $('#latest-release').html(version_number);
         $('#minecraft-version').html(response.download.version);
