@@ -32,7 +32,8 @@ function update(table) {
         if (table) {
             releasesTable(response);
             table.tablesorter({
-                sortList: [[4,0]]
+                textExtraction: releaseTextExtraction,
+                sortList: [[0, 0]]
             });
         }
     });
@@ -42,22 +43,33 @@ function update(table) {
 function releasesTable(response) {
     let table_data;
 
-    for (let key in response.files) {
+    let key, i = 0;
+    for (key in response.files) {
+        i++;
         let file = response.files[key];
         let split_name = file.name.split(/[\s-]+/g);
 
         let date_created = new Date(file.created_at);
         date_created = date_created.toDateString();
         table_data = "<tr>" +
-            "\n    <td>" + split_name[0] + "</td>" +
+            "\n    <td>#" + i + "</td>" +
+            "\n    <td><b>" + split_name[0] + "</b></td>" +
             "\n    <td>" + split_name[1] + "</td>" +
             "\n    <td>" + split_name[2] + "</td>" +
             "\n    <td>" + date_created + "</td>" +
             "\n    <td>" + file.downloads + "</td>" +
             "\n    <td>" +
-            "<a class=\"icon fa-download\" href=\"" + files_base + file.id + "/download\"> #" + file.id + "</a></td>" +
+            "<a class=\"icon fa-download\" href=\"" + files_base + file.id + "/download\"> <i>#" + file.id + "</i></a></td>" +
             "</tr>\n" + table_data;
 
         $('#release-content').html(table_data)
     }
 }
+
+const releaseTextExtraction = function(node) {
+    if (node.innerHTML.match(/^[#v]/)) {
+        return node.innerHTML.substr(1);
+    } else {
+        return node.innerHTML;
+    }
+};
