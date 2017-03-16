@@ -52,15 +52,15 @@ function releasesTable(response) {
         let date_created = new Date(file.created_at);
         date_created = date_created.toDateString();
         table_data = "<tr>" +
-            "\n    <td>#" + i + "</td>" +
-            "\n    <td><b>" + split_name[0] + "</b></td>" +
-            "\n    <td>" + split_name[1] + "</td>" +
-            "\n    <td>" + split_name[2] + "</td>" +
-            "\n    <td>" + date_created + "</td>" +
-            "\n    <td>" + file.downloads + "</td>" +
-            "\n    <td>" +
+            "<td>#" + i + "</td>" +
+            "<td><b>" + split_name[0] + "</b></td>" +
+            "<td>" + split_name[1] + "</td>" +
+            "<td>" + split_name[2] + "</td>" +
+            "<td>" + date_created + "</td>" +
+            "<td>" + file.downloads + "</td>" +
+            "<td>" +
             "<a class=\"icon fa-download\" href=\"" + files_base + file.id + "/download\"> <i>#" + file.id + "</i></a></td>" +
-            "</tr>\n" + table_data;
+            "</tr>" + table_data;
 
         $('#release-content').html(table_data)
     }
