@@ -5,15 +5,83 @@ import com.spikespaz.eamod.item.ModItems;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.io.*;
+
 public class CraftingRecipes {
-    public static void mainRegistry() {
-        addCraftingRecipes();
+    /**
+     * this reader is only for reading config file.
+     */
+    private static BufferedReader r;
+    private static BufferedWriter w;
+
+
+    public static void mainRegistry(FMLPreInitializationEvent event) {
+        addCraftingRecipes(event);
         addSmeltingRecipes();
     }
 
-    private static void addCraftingRecipes() {
+    private static void addCraftingRecipes(FMLPreInitializationEvent event) {
+        boolean hasFile=false;
+        File file=new File(event.getModConfigurationDirectory().toPath().toString()+"/essentialAdditions.properties");
+        if(event.getModConfigurationDirectory().canRead()&&event.getModConfigurationDirectory().canWrite()
+                && event.getModConfigurationDirectory().exists()){
+            try {
+                file.createNewFile();
+                r=new BufferedReader(new FileReader(file));
+                defaultFile(file);
+                hasFile=true;
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Something is wrong and file can't be created. no more configs for Essential Additions.");
+            }
+
+
+        }
+        if(hasFile){
+            try {
+                String line="";
+                short hardCoded=0;
+                while(null!=(line=r.readLine())) {
+                    if (line.startsWith("#")) {
+                        continue;
+                    }else if(isTrue(line)){
+                            switch (hardCoded){
+                                case 0:registerEmeraldArmor();break;
+                                case 1:registerObsidiandArmor();break;
+                                case 2:registerRubyArmor();break;
+                                case 3:registerChainMailArmor();break;
+                                case 4:registerEmeraldTools();break;
+                                case 5:registerObsidianTools();break;
+                                case 6:registerRubyTools();break;
+                                case 7:registerVanillaTools();break;
+                                case 8:registerVanillaBlocks();break;
+                                case 9:registerHorseArmor();break;
+                                case 10:registerModStuff();break;
+                        }
+                    }
+                    hardCoded++;
+                }
+            }catch (Exception e){e.printStackTrace();}
+        }else {
+            registerEmeraldArmor();
+            registerObsidiandArmor();
+            registerRubyArmor();
+            registerChainMailArmor();
+            registerEmeraldTools();
+            registerObsidianTools();
+            registerRubyTools();
+            registerVanillaTools();
+            registerVanillaBlocks();
+            registerHorseArmor();
+            registerModStuff();
+
+        }
+    }
+
+    private static void registerEmeraldArmor(){
         // Emerald Armor
         GameRegistry.addRecipe(new ItemStack(ModItems.EMERALD_HELMET, 1),
                 "EEE", "E E", "   ", 'E', Items.EMERALD);
@@ -23,6 +91,9 @@ public class CraftingRecipes {
                 "EEE", "E E", "E E", 'E', Items.EMERALD);
         GameRegistry.addRecipe(new ItemStack(ModItems.EMERALD_BOOTS, 1),
                 "   ", "E E", "E E", 'E', Items.EMERALD);
+    }
+
+    private static void registerObsidiandArmor(){
         // Obsidian Armor
         GameRegistry.addRecipe(new ItemStack(ModItems.OBSIDIAN_HELMET, 1),
                 "OOO", "O O", "   ", 'O', ModItems.OBSIDIAN_SHARD);
@@ -32,6 +103,9 @@ public class CraftingRecipes {
                 "OOO", "O O", "O O", 'O', ModItems.OBSIDIAN_SHARD);
         GameRegistry.addRecipe(new ItemStack(ModItems.OBSIDIAN_BOOTS, 1),
                 "   ", "O O", "O O", 'O', ModItems.OBSIDIAN_SHARD);
+    }
+
+    private static void registerRubyArmor(){
         // RUBY Armor
         GameRegistry.addRecipe(new ItemStack(ModItems.RUBY_HELMET, 1),
                 "RRR", "R R", "   ", 'R', ModItems.RUBY);
@@ -41,6 +115,9 @@ public class CraftingRecipes {
                 "RRR", "R R", "R R", 'R', ModItems.RUBY);
         GameRegistry.addRecipe(new ItemStack(ModItems.RUBY_BOOTS, 1),
                 "   ", "R R", "R R", 'R', ModItems.RUBY);
+    }
+
+    private static void registerChainMailArmor(){
         // Chainmail Armor
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_HELMET, 1),
                 "CCC", "C C", "   ", 'C', ModItems.CHAIN_LINK);
@@ -50,6 +127,9 @@ public class CraftingRecipes {
                 "CCC", "C C", "C C", 'C', ModItems.CHAIN_LINK);
         GameRegistry.addRecipe(new ItemStack(Items.CHAINMAIL_BOOTS, 1),
                 "   ", "C C", "C C", 'C', ModItems.CHAIN_LINK);
+    }
+
+    private static void registerEmeraldTools(){
         // Emerald Tools
         GameRegistry.addRecipe(new ItemStack(ModItems.EMERALD_SWORD, 1),
                 " E ", " E ", " S ", 'S', Items.STICK, 'E', Items.EMERALD);
@@ -61,6 +141,9 @@ public class CraftingRecipes {
                 "EEE", " S ", " S ", 'S', Items.STICK, 'E', Items.EMERALD);
         GameRegistry.addRecipe(new ItemStack(ModItems.EMERALD_HOE, 1),
                 "EE ", " S ", " S ", 'S', Items.STICK, 'E', Items.EMERALD);
+    }
+
+    private static void registerObsidianTools(){
         // Obsidian Tools
         GameRegistry.addRecipe(new ItemStack(ModItems.OBSIDIAN_SWORD, 1),
                 " O ", " O ", " S ", 'S', Items.STICK, 'O', ModItems.OBSIDIAN_SHARD);
@@ -72,6 +155,9 @@ public class CraftingRecipes {
                 "OOO", " S ", " S ", 'S', Items.STICK, 'O', ModItems.OBSIDIAN_SHARD);
         GameRegistry.addRecipe(new ItemStack(ModItems.OBSIDIAN_HOE, 1),
                 "OO ", " S ", " S ", 'S', Items.STICK, 'O', ModItems.OBSIDIAN_SHARD);
+    }
+
+    private static void registerRubyTools(){
         // RUBY Tools
         GameRegistry.addRecipe(new ItemStack(ModItems.RUBY_SWORD, 1),
                 " R ", " R ", " S ", 'S', Items.STICK, 'R', ModItems.RUBY);
@@ -83,6 +169,9 @@ public class CraftingRecipes {
                 "RRR", " S ", " S ", 'S', Items.STICK, 'R', ModItems.RUBY);
         GameRegistry.addRecipe(new ItemStack(ModItems.RUBY_HOE, 1),
                 "RR ", " S ", " S ", 'S', Items.STICK, 'R', ModItems.RUBY);
+    }
+
+    private static void registerVanillaTools(){
         // Vanilla Items
         GameRegistry.addRecipe(new ItemStack(Items.SADDLE, 1),
                 "LLL", "LIL", "S S", 'L', Items.LEATHER, 'I', Items.IRON_INGOT, 'S', Items.STRING);
@@ -94,9 +183,15 @@ public class CraftingRecipes {
                 "SSS", "SSS", "SSS", 'S', Items.STRING);
         GameRegistry.addShapelessRecipe(new ItemStack(Items.GUNPOWDER, 2),
                 ModItems.CHARCOAL_DUST, ModItems.SULFUR);
+    }
+
+    private static void registerVanillaBlocks(){
         // Vanilla Blocks
         GameRegistry.addRecipe(new ItemStack(Blocks.OBSIDIAN, 1),
                 "OOO", "OOO", "OOO", 'O', ModItems.OBSIDIAN_SHARD);
+    }
+
+    private static void registerHorseArmor(){
         // Horse Armor
         GameRegistry.addRecipe(new ItemStack(Items.IRON_HORSE_ARMOR, 1),
                 "  P", "PPP", "PWP", 'P', ModItems.IRON_PLATING, 'W', Blocks.WOOL);
@@ -104,6 +199,9 @@ public class CraftingRecipes {
                 "  G", "GGG", "GWG", 'W', Blocks.WOOL, 'G', ModItems.GOLD_PLATING);
         GameRegistry.addRecipe(new ItemStack(Items.DIAMOND_HORSE_ARMOR, 1),
                 "DDD", "DAD", "DDD", 'A', Items.IRON_HORSE_ARMOR, 'D', Items.DIAMOND);
+    }
+
+    private static void registerModStuff(){
         // Mod Blocks
         GameRegistry.addRecipe(new ItemStack(Blocks.OBSIDIAN, 1),
                 "   ", " OO", " OO", 'O', ModItems.OBSIDIAN_SHARD);
@@ -124,6 +222,34 @@ public class CraftingRecipes {
                 Items.GOLD_INGOT, Items.GOLD_INGOT);
         GameRegistry.addShapelessRecipe(new ItemStack(ModItems.CHARCOAL_DUST, 2),
                 new ItemStack(Items.COAL, 1, 1));
+    }
+
+    private static boolean isTrue(String line){
+        System.out.println(line);
+        return line.split("=")[1].equals("true")? true:false;
+    }
+
+    private static void defaultFile(File file) throws IOException{
+        w = new BufferedWriter(new FileWriter(file));
+        newLiner("#Recipes");
+        newLiner("EmeraldArmor=true");
+        newLiner("ObsidianArmor=true");
+        newLiner("RubyArmor=true");
+        newLiner("ChainMailArmor=true");
+        newLiner("EmeraldTools=true");
+        newLiner("ObsidianTools=true");
+        newLiner("RubyTools=true");
+        newLiner("VanillaTools=true");
+        newLiner("VanillaBlocks=true");
+        newLiner("HorseArmor=true");
+        newLiner("MiscModStuff=true");
+        w.flush();
+        w.close();
+    }
+
+    private static void newLiner(String toWriteWithNewLine)throws IOException{
+        w.write(toWriteWithNewLine);
+        w.newLine();
     }
 
     private static void addSmeltingRecipes() {
